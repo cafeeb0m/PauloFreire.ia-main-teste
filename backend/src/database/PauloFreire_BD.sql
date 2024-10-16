@@ -1,0 +1,124 @@
+CREATE DATABASE IF NOT EXISTS PauloFreire_bd;
+USE PauloFreire_bd;
+
+-- Entidade AGENDA
+CREATE TABLE IF NOT EXISTS Agendas(
+codAgenda INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+Tempo INT NOT NULL
+);
+
+-- Entidade DISCIPLINA
+CREATE TABLE IF NOT EXISTS Disciplinas(
+codDisciplina INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+Nome VARCHAR(255) NOT NULL
+);
+
+-- Entidade DIA ÚTIL
+CREATE TABLE IF NOT EXISTS DiaUtil(
+codDiaUtil INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+Dia DATE NOT NULL,
+codAgenda INT,
+FOREIGN KEY (codAgenda) REFERENCES Agendas(codAgenda)
+);
+
+-- Entidade DIA DISCIPLINA
+CREATE TABLE IF NOT EXISTS DiaDisciplinas(
+codDiaDisciplina INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+codDiaUtil INT NOT NULL,
+FOREIGN KEY (codDiaUtil) REFERENCES DiaUtil(codDiaUtil),
+codDisciplina INT NOT NULL,
+FOREIGN KEY (codDisciplina) REFERENCES Disciplinas(codDisciplina)
+);
+
+-- Entidade PERFIL
+CREATE TABLE IF NOT EXISTS Perfil(
+idPerfil INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+Nome VARCHAR(255) NOT NULL,
+Email VARCHAR(255) NOT NULL,
+Senha VARCHAR(255) NOT NULL,
+Adm BOOLEAN NOT NULL,
+Foto VARCHAR(255),
+Organizacao VARCHAR(255) NOT NULL,
+codAgenda INT,
+FOREIGN KEY (codAgenda) REFERENCES Agendas(codAgenda)
+);
+
+-- Entidade ENDEREÇOS
+CREATE TABLE IF NOT EXISTS Enderecos(
+codEndereco INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+Logradouro VARCHAR(255) NOT NULL,
+Numero VARCHAR(4) NOT NULL,
+Complemento VARCHAR(255) NOT NULL,
+CEP VARCHAR(255) NOT NULL,
+Bairro VARCHAR(255) NOT NULL,
+Cidade VARCHAR(255) NOT NULL,
+idPerfil INT,
+FOREIGN KEY (idPerfil) REFERENCES Perfil(idPerfil)
+);
+
+-- Entidade CHATBOT
+CREATE TABLE IF NOT EXISTS ChatBot(
+codChatBot INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+NomeChat VARCHAR(255) NOT NULL,
+Treinamento BOOLEAN NOT NULL
+);
+
+-- Entidade CHATS
+CREATE TABLE IF NOT EXISTS Chats(
+codChat INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+Mensagem VARCHAR(1000) NOT NULL,
+Input ENUM('perfil', 'chat') NOT NULL,
+codChatBot INT,
+FOREIGN KEY (codChatBot) REFERENCES ChatBot(codChatBot),     
+idPerfil INT,
+FOREIGN KEY (idPerfil) REFERENCES Perfil(idPerfil)
+);
+
+-- Entidade ASSUNTOS
+ CREATE TABLE IF NOT EXISTS Assuntos(
+codAssunto INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+Titulo VARCHAR(255) NOT NULL,
+ConteudoTreino VARCHAR(1000) NOT NULL,
+codDisciplina INT NOT NULL,
+FOREIGN KEY (codDisciplina) REFERENCES Disciplinas(codDisciplina),
+codChatBot INT NOT NULL,
+FOREIGN KEY (codChatBot) REFERENCES ChatBot(codChatBot) 
+);
+
+-- Entidade SIMULADOS
+CREATE TABLE IF NOT EXISTS Simulados(
+codSimulado INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+Ano VARCHAR(4) NOT NULL,
+idPerfil INT,
+FOREIGN KEY (idPerfil) REFERENCES Perfil(idPerfil)
+);
+
+-- Entidade SIMULADOS REALIZADOS
+CREATE TABLE IF NOT EXISTS SimuladosRealizados(
+codRealizados INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+idPerfil INT,
+FOREIGN KEY (idPerfil) REFERENCES Perfil(idPerfil),
+codSimulado INT,
+FOREIGN KEY (codSimulado) REFERENCES Simulados(codSimulado)
+);
+
+-- Entidade QUESTÕES
+CREATE TABLE IF NOT EXISTS Questoes(
+codQuestao INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+Questao VARCHAR(255) NOT NULL,
+Ano VARCHAR(4) NOT NULL,
+NumQuestao INT NOT NULL,
+codSimulado INT,
+FOREIGN KEY (codSimulado) REFERENCES Simulados(codSimulado),
+codChatBot INT,
+FOREIGN KEY (codChatBot) REFERENCES ChatBot(codChatBot) 
+);
+
+-- Entidade ALTERNATIVAS
+CREATE TABLE IF NOT EXISTS Alternativas(
+codAlternativa INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+Alternativa VARCHAR(255) NOT NULL,
+Correta BOOLEAN NOT NULL,
+codQuestao INT,
+FOREIGN KEY (codQuestao) REFERENCES Questoes(codQuestao)
+);

@@ -1,0 +1,2 @@
+colocar atributo de imagem na tabela questões
+verificar UPDATE no banco de dados (não funciona com foreign keys)

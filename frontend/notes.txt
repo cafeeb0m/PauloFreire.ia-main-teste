@@ -1,0 +1,16 @@
+perfil
+  endereços
+
+disciplinas
+  assuntos
+    questões
+      alternativas
+
+simulados
+  simulado realizado
+
+agenda   
+  dias e disciplinas
+
+chatbots
+  chats

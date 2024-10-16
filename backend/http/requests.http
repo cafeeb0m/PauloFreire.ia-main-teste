@@ -1,0 +1,13 @@
+PUT http://localhost:8000/api/profiles/24 HTTP/1.1
+content-type: application/json
+
+{
+    "idPerfil": 24,
+    "Nome": "Kauã Medeiro",
+    "Email": "kaua@gmail.com",
+    "Senha": "4321",
+    "Adm": 0,
+    "Foto": null,
+    "Organizacao": "",
+    "codAgenda": 3
+  }
