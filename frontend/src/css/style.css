@@ -433,3 +433,8 @@ main{
     width: 100%;
     height: 100%;   
 }
+
+.container-discipline-card{
+    width: 220px;
+    height: 80px;
+}   
